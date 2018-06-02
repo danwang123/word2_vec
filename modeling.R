@@ -1,18 +1,5 @@
 ### Build models to fit the data and make predictions.
-### 
-### Models:
-###   Linear Regression
-###   Linear Regression with principal component analysis
-###   Ridge Regression
-###   Foward stepwise regression
-###   Lasso Regression
-###   Random Forest
-###   Gradient Boosting Trees
-###
-
 rm(list = ls())
-
- 
 library(Metrics) 
 library(caret)
 library(ranger) 
@@ -91,21 +78,6 @@ index <- sample(1:dim(dataset)[1], floor(0.6 * dim(dataset)[1]))
 train <- dataset[index, ]
 test <- dataset[-index, ]
 
-
-############### random forest ###############
-# use 5-fold cv to find best hyperparameters for the model
-# ctrl = trainControl(method = "cv", 
-#                     number = 5)
-# grid_rf = expand.grid(mtry = c(50, 60, 70), splitrule = 'variance')
-# fit_rf = train(Rent ~ .,
-#                data = train,
-#                method = "ranger",
-#                # tuneGrid = grid_rf,
-#                tuneLength = 5,
-#                trControl = ctrl,
-#                metric = 'RMSE')
-
-# fit the model with best parameters
 fit_rf_best <- ranger(Rent ~., 
                       data         = train, 
                       mtry         = 13, 
@@ -137,21 +109,6 @@ rmse(pred_bagging, test$Rent)
 
 
 ############### gradient boosting trees ###############
-# use 5-fold cv to find best hyperparameters for the model
-# ctrl = trainControl(method = "cv", 
-#                     number = 5)
-# grid_gbm = expand.grid(n.trees = 700, 
-#                        interaction.depth = 7, 
-#                        shrinkage = 0.1,
-#                        n.minobsinnode = 5)
-# fit_gbm = train(Rent ~ .,
-#                 data = train,
-#                 method = "gbm",
-#                 tuneGrid = grid_gbm,
-#                 # tuneLength = 5,
-#                 trControl = ctrl,
-#                 metric = 'RMSE')
-
 # fit the model with best parameters
 fit_gbm <- gbm(Rent ~., data     = train,
                distribution      = 'gaussian',
